@@ -149,6 +149,7 @@ services:
 - depends_on : 실행 의존성 설정. 위 예제는 db 서비스가 실행된 후에 django 서비스를 실행하겠다는 의미
 - links : docker run에서 --link 옵션. 다른 컨테이너 참조 설정
 - command : 실행할 명령어 
+- privileged : 컨테이너 안에서 호스트의 리눅스 커널 기능(Capability)을 모두 사용합니다.
 
 ## docker-compose 기본 명령어
 ```
