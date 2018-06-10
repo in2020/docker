@@ -22,7 +22,7 @@ docker rm [CONTAINER ID or NAME] : 컨테이너 삭제
 docker rmi [IMAGE ID or REPOSITORY:TAG] : 이미지 삭제
 ```
 ## 이미지 추가 3가지 방법
-1. docker pull <이미지 이름> : docker.io의 공식 저장소에서 이미지를 다운
+1. docker pull <이미지 이름> : docker.io의 공식 저장소에서 이미지를 다운(https://hub.docker.com/explore/)
 2. docker commit : 컨테이너 변경점 기준 이미지 생성
 ```
 docker commit <컨테이너 이름> <이미지 이름>:<태그> : 컨테이너 기준 이미지 생성 
