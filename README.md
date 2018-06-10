@@ -104,8 +104,8 @@ services:
     container_name: "mysql5.7"
 ```
 - version : 파일 규격 버전을 적습니다. 파일의 규격에 따라 지원하는 옵션이 다름
-- service : 실행하려는 서비스들을 정의합니다. 서비스란, 앱 컨테이너나 db 컨테이너 각각의 묶음입니다.
-- db, django : 서비스 이름
+- services : 실행하려는 서비스들을 정의합니다. 서비스란, 앱 컨테이너나 db 컨테이너 각각의 묶음입니다.
+- web, db : 서비스 이름
 - image : 서비스에서 사용할 이미지 
 - volumes : 로컬 연결 경로. 상대경로로 지정 
 - environment : docker run -e 옵션 내용
@@ -113,14 +113,15 @@ services:
 - build : 이미지를 빌드하여 사용
 - context : docker build 명령을 실행할 디렉터리 경로
 - dockerfile : 이미지 빌드엣 사용할 docker 파일
-- ports : 커 컴포즈로 서비스를 실행하면 기본적으로 가상의 네트워크가 하나 만들어지고, 네트워크 외부의 접근이 막힙니다. 외부 접근 포트 지정
-- depends_on : 실행 의존성 설정. 위 예제는 db 서비스가 실행된 후에 django 서비스를 실행하겠다는 의미
+- ports : 도커 컴포즈로 서비스를 실행하면 기본적으로 가상의 네트워크가 하나 만들어지고, 네트워크 외부의 접근이 막힙니다. 외부 접근 포트 지정
+- depends_on : 실행 의존성 설정. 
 - links : docker run에서 --link 옵션. 다른 컨테이너 참조 설정
 - command : 실행할 명령어 
 - privileged : 컨테이너 안에서 호스트의 리눅스 커널 기능(Capability)을 모두 사용합니다.
 
 ## docker-compose 기본 명령어
 ```
+build : docker-compose.yml 기술 내용으로 이미지 생성
 up : docker-compose.yml 파일의 내용에 따라 서비스 실행
 ps : 현재 환경에서 실행 중인 서비스를 보여줍니다.
 stop, start : 서비스를 멈추거나, 멈춰 있는 서비스를 시작합니다.
