@@ -32,39 +32,26 @@ docker diff <컨테이너 이름> : 이미지와 다른 점 출력 git과 유사
 
 3. Dockerfile : 필요한 설정이 기술된 파일 기준으로 도커 이미지 생성
 ```
-FROM ubuntu:12.04
-MAINTAINER Daekwon Kim <propellerheaven@gmail.com>
+FROM centos:7.4.1708
 
-# Run upgrades
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
-RUN apt-get update
+RUN yum -y update
 
-# Install basic packages
-RUN apt-get -qq -y install git curl build-essential
+# 외부 레파지토리(EPEL, Remi)을 추가
+RUN yum -y install epel-release
+RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
-# Install apache2
-RUN apt-get -qq -y install apache2
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-RUN a2enmod rewrite
+# apache기타 php패키지를 도입
+RUN yum -y install httpd
+RUN yum -y install --enablerepo=remi,remi-php72 php php-cli php-common php-devel php-fpm php-gd php-mbstring php-mysqlnd php-pdo php-pear php-pecl-apcu php-soap php-xml php-xmlrpc 
+RUN yum -y install zip unzip
 
-# Install php
-RUN apt-get -qq -y install php5
-RUN apt-get -qq -y install libapache2-mod-php5
+# composer 설치
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
 
-# Install Moniwiki
-RUN apt-get install rcs
-RUN cd /tmp; curl -L -O http://dev.naver.com/frs/download.php/8193/moniwiki-1.2.1.tgz
-RUN tar xf /tmp/moniwiki-1.2.1.tgz
-RUN mv moniwiki /var/www/
-RUN chown -R www-data:www-data /var/www/moniwiki
-RUN chmod 777 /var/www/moniwiki/data/ /var/www/moniwiki/
-RUN chmod +x /var/www/moniwiki/secure.sh
-RUN ./var/www/moniwiki/secure.sh
+CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
-EXPOSE 80
-CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
+WORKDIR /var/www/html
 ```
 - FROM은 어떤 이미지로부터 새로운 이미지를 생성할 지를 지정   
 - RUN은 직접 쉘 명령어를 실행하는 명령어입니다. 이 때 바로 뒤에 명령어를 입력하게 되면 쉘을 통해서 명령어가 실행
@@ -94,46 +81,25 @@ docker build 명령어는 -t 플래그를 사용해 이름과 태그를 지정�
 
 ## docker-compose.yml
 ```
-version: '2.1'
-
+version: "3"
 services:
-  db:
-    image: postgres:9.6.1
-    volumes:
-      - ./docker/data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=sampledb
-      - POSTGRES_USER=sampleuser
-      - POSTGRES_PASSWORD=samplesecret
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
-    healthcheck:
-      test: "pg_isready -h localhost -p 5432 -q -U postgres"
-      interval: 3s
-      timeout: 1s
-      retries: 10
-
-  django:
+  web:
     build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile-dev
-    environment:
-      - DJANGO_DEBUG=True
-      - DJANGO_DB_HOST=db
-      - DJANGO_DB_PORT=5432
-      - DJANGO_DB_NAME=sampledb
-      - DJANGO_DB_USERNAME=sampleuser
-      - DJANGO_DB_PASSWORD=samplesecret
-      - DJANGO_SECRET_KEY=dev_secret_key
-    ports:
-      - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
+      context: ./apache-php
+    ports: 
+      - 80:80
+    privileged: true
     links:
       - db
-    command: /start-dev.sh
     volumes:
-      - ./:/app/
+      - "../minda-api/:/var/www/html/"
+      - "./apache-php/httpd.conf:/etc/httpd/conf/httpd.conf"
+    container_name: "apache-php"
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    container_name: "mysql5.7"
 ```
 - version : 파일 규격 버전을 적습니다. 파일의 규격에 따라 지원하는 옵션이 다름
 - service : 실행하려는 서비스들을 정의합니다. 서비스란, 앱 컨테이너나 db 컨테이너 각각의 묶음입니다.
