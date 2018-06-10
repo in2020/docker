@@ -73,6 +73,7 @@ docker build 명령어는 -t 플래그를 사용해 이름과 태그를 지정�
 # docker compose
 참고 : [Docker (Compose) 활용법 - 개발 환경 구성하기](http://raccoonyy.github.io/docker-usages-for-dev-environment-setup/)   
 도커 컴포즈에서는 컨테이너 실행에 사용되는 옵션과 컨테이너 간 의존성을 모두  docker-compose.yml파일에 적어두고, 컴포즈용 명령어를 사용하여 컨테이너들을 실행, 관리합니다.
+
 ## 도커와 도커 컴포즈를 비교
 - Dockerfile vs. Dockerfile-dev: 서버 구성을 문서화한 것(=클래스 선언이 들어 있는 파일)
 - docker build vs. docker-compose build: 도커 이미지 만들기(=클래스 선언을 애플리케이션에 로드)
@@ -80,6 +81,7 @@ docker build 명령어는 -t 플래그를 사용해 이름과 태그를 지정�
 - docker run vs. docker-compose up: 장식 붙은 이미지를 실제로 실행(=인스턴스 생성)   
 
 ## docker-compose.yml
+[Compose file reference](https://docs.docker.com/compose/compose-file/)
 ```
 version: "3"
 services:
