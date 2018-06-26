@@ -59,6 +59,9 @@ WORKDIR /var/www/html
 - EXPOSE는 가상 머신에 오픈할 포트를 지정해줍니다. 마지막줄의 CMD는 컨테이너에서 실행될 명령어를 지정해줍니다. 이 글의 앞선 예에서는 docker run을 통해서 /bin/bash를 실행했습니다만, 여기서는 아파치 서버를 FOREGROUND에 실행시킵니다.
 - Dockerfile 이미지 생성 build
 - WORKDIR <경로> : WORKDIR 뒤에 오는 모든 RUN, CMD, ENTRYPOINT에 적용되며, 중간에 다른 디렉터리를 설정하여 실행 디렉터리를 바꿀 수 있습니다.
+- CMD와 RUN 차이 
+  - RUN is an image build step
+  - CMD is the command the container executes by default when you launch the built image.
 ```
 docker build -t nacyot/moniwiki .
 ```
