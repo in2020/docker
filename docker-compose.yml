@@ -2,18 +2,20 @@ version: "3"
 services:
   web:
     build:
-      context: ./apache-php
+      context: ./centos-java-gradle
     ports: 
-      - 80:80
+      - 8888:80
+    tty: true
+    stdin_open: true
     privileged: true
-    links:
-      - db
+#    links:
+#      - db
     volumes:
-      - "../minda-api/:/var/www/html/"
-      - "./apache-php/httpd.conf:/etc/httpd/conf/httpd.conf"
-    container_name: "apache-php"
-  db:
-    image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-    container_name: "mysql5.7"
+      - "../demo/:/home/in2020/springboot-init/"
+      - "./centos-java-gradle/set_path.sh:/etc/profile.d/set_path.sh"
+    container_name: "centos-java-gradle"
+#  db:
+#    image: mysql:5.7
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#    container_name: "mysql5.7"
