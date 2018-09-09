@@ -11,6 +11,7 @@ services:
     volumes:
       - "../nbsoft-post/:/var/www/html/"
       - "./apache-php/httpd.conf:/etc/httpd/conf/httpd.conf"
+      - "./apache-php/php.ini:/etc/php.ini"
     container_name: "apache-php"
   db:
     image: mysql:5.7

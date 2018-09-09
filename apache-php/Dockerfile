@@ -15,6 +15,12 @@ RUN yum -y install zip unzip
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
+# php log 설정
+WORKDIR /var/www
+RUN mkdir logs
+RUN chmod 777 logs
+
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
+
 
 WORKDIR /var/www/html
