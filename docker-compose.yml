@@ -5,19 +5,12 @@ services:
       context: ./apache-php
     ports: 
       - 80:80
+      - 3306:3306
+      - 10022:22
     privileged: true
-    links:
-      - db
     volumes:
       - "../nbsoft-post/:/var/www/html/"
       - "./apache-php/httpd.conf:/etc/httpd/conf/httpd.conf"
       - "./apache-php/php.ini:/etc/php.ini"
       - "./apache-php/15-xdebug.ini:/etc/php.d/15-xdebug.ini"
     container_name: "apache-php"
-  db:
-    image: mysql:5.7
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-    container_name: "mysql5.7"

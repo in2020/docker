@@ -2,11 +2,14 @@ FROM centos:7.4.1708
 
 RUN yum -y update
 
-RUN yum -y install net-tools
-
 # 외부 레파지토리(EPEL, Remi)을 추가
 RUN yum -y install epel-release
 RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+
+RUN yum -y install net-tools
+RUN yum -y install openssh-clients
+
 
 # apache기타 php패키지를 도입
 RUN yum -y install httpd
