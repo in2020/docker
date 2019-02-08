@@ -3,11 +3,19 @@ FROM ubuntu:18.04
 RUN apt-get update
 RUN apt-get -y upgrade
 
-# Reference http://twibap.tistory.com/9
+# Reference http://twibap.tistory.com/9, http://php.net/manual/kr/install.php
 
 # Compile tools
 RUN apt-get install -y build-essential
 RUN apt-get install -y libexpat1-dev
+RUN apt-get install -y libxml2-dev
+
+# Network tools
+#RUN apt-get install -y network-manager
+RUN apt-get install -y net-tools
+#RUN apt-get install -y openssh-server
+RUN apt-get install -y ufw
+RUN apt-get install -y dnsutils
 
 # Install wget
 RUN apt-get install -y wget
@@ -16,6 +24,7 @@ RUN apt-get install -y wget
 WORKDIR /root
 RUN mkdir Downloads
 
+## Apache
 # Download Apache & extraction
 WORKDIR /root/Downloads
 RUN wget http://mirror.navercorp.com/apache//httpd/httpd-2.4.37.tar.gz
@@ -59,9 +68,17 @@ RUN make && make install
 RUN /sbin/ldconfig
 # RUN /usr/local/apache2/bin/apachectl start
 
-# RUN yum -y install httpd
-# RUN yum -y install --enablerepo=remi,remi-php72 php php-cli php-common php-devel php-fpm php-gd php-mbstring php-mysqlnd php-pdo php-pear php-pecl-apcu php-soap php-xml php-xmlrpc php-xdebug
-# RUN yum -y install zip unzip
+## PHP
+# Download PHP & extraction
+WORKDIR /root/Downloads
+RUN wget http://jp2.php.net/get/php-7.3.1.tar.gz/from/this/mirror -O ./php-7.3.1.tar.gz
+RUN tar zxvf php-7.3.1.tar.gz
+
+# Install PHP
+WORKDIR /root/Downloads/php-7.3.1
+RUN ./configure -q
+RUN make
+RUN make install
 
 # # composer 설치
 # RUN curl -sS https://getcomposer.org/installer | php

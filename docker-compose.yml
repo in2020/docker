@@ -9,11 +9,11 @@ services:
     tty: true
     # links:
     #   - db
-    # volumes:
-    #   - "../nbsoft-post/:/var/www/html/"
-    #   - "./apache-php/httpd.conf:/etc/httpd/conf/httpd.conf"
-    #   - "./apache-php/php.ini:/etc/php.ini"
-    #   - "./apache-php/15-xdebug.ini:/etc/php.d/15-xdebug.ini"
+    volumes:
+      #- "../PJblog/:/usr/local/apache2/htdocs"
+      - "./ubuntu-apache/httpd.conf:/etc/local/apache2/conf/httpd.conf"
+      # - "./ubuntu-apache/php.ini:/etc/php.ini"
+      # - "./ubuntu-apache/15-xdebug.ini:/etc/php.d/15-xdebug.ini"
     container_name: "ubuntu-apache"
   # db:
   #   image: mysql:5.7
