@@ -26,6 +26,9 @@ RUN apt-get install -y vim
 RUN apt-get install -y libssl-dev
 
 
+# Install vim
+RUN apt-get install -y vim
+
 # Make Downloads directory
 WORKDIR /root
 RUN mkdir Downloads
@@ -82,6 +85,7 @@ RUN wget http://jp2.php.net/get/php-7.3.1.tar.gz/from/this/mirror -O ./php-7.3.1
 RUN tar zxvf php-7.3.1.tar.gz
 
 # Install PHP
+# TODO modules..
 WORKDIR /root/Downloads/php-7.3.1
 RUN ./configure -q
 RUN make
